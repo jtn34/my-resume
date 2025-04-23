@@ -59,34 +59,34 @@
                 </ul>
             </div>
         </nav>
-        <div class="container">
-          <div class="row">
-            <form action="">
-                <div class="form-group">
-                    <label for="firstname">First Name:</label>
-                    <input type="text" class="form-control" id="firstname"
-                           placeholder="First name" name="firstname">
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form onsubmit="handleFormSubmit(event)">
+                        <div class="mb-3">
+                            <label for="firstname" class="form-label">First Name:</label>
+                            <input type="text" class="form-control" id="firstname" placeholder="First name" name="firstname">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label">Last Name:</label>
+                            <input type="text" class="form-control" id="lastname" placeholder="Last name" name="lastname">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="subscribe" name="subscribe">
+                            <label class="form-check-label" for="subscribe">Subscribe</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="lastname">Last Name:</label>
-                    <input type="text" class="form-control" id="lastname"
-                           placeholder="Last name" name="lastname">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email"
-                           placeholder="Enter email" name="email">
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input"
-                               type="checkbox" name="subscribe"> Subscribe
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </row>
-</div>
+            </div>
         </div>
  <footer class="footer page-footer font-small ">
      <div class="container">
@@ -103,6 +103,43 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous">
 </script>
+    <script>
+        // Set a cookie
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + d.toUTCString() + ";path=/";
+        }
 
+        // Get a cookie
+        function getCookie(name) {
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookies = decodedCookie.split(';');
+            name = name + "=";
+            for (let c of cookies) {
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+            }
+            return "";
+        }
+
+        // Populate form if cookies exist
+        window.onload = function () {
+            document.getElementById("firstname").value = getCookie("firstname") || "";
+            document.getElementById("lastname").value = getCookie("lastname") || "";
+            document.getElementById("email").value = getCookie("email") || "";
+            document.getElementById("subscribe").checked = getCookie("subscribe") === "true";
+        }
+
+        // Save cookies on submit
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            setCookie("firstname", document.getElementById("firstname").value, 7);
+            setCookie("lastname", document.getElementById("lastname").value, 7);
+            setCookie("email", document.getElementById("email").value, 7);
+            setCookie("subscribe", document.getElementById("subscribe").checked, 7);
+            alert("Form submitted and data saved to cookies!");
+        }
+    </script>
 </body>
 </html>
